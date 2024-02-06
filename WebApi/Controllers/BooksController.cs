@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Repositories.Contracts;
 using Repositories.EFCore;
 
 
@@ -12,18 +13,26 @@ namespace WebApi.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly RepositoryContext _context;
-        public BooksController(RepositoryContext context)
+        private readonly IRepositoryManager _manager;  //RepositoryContext _context; ==> artık manager kullanılsın istiyoruz.
+
+        public BooksController(IRepositoryManager manager)
+        {
+            _manager = manager; //_manager üzerinden repolara erişim sağlanır
+        }
+
+
+        /* public BooksController(RepositoryContext context)
         {//register yapılmış olan context burda resolve edilir
 
             _context = context;
-        }
+        }*/
+
 
         [HttpGet]
         public IActionResult GetAllBooks()
         {
-            try { 
-                var books = _context.Books.ToList();
+            try {
+                var books = _manager.BookRepo.GetAllBooks(false);   //_context.Books.ToList();
                 return Ok(books);
             }
             catch (Exception ex)
@@ -37,7 +46,8 @@ namespace WebApi.Controllers
         {
             try
             {
-                var book = _context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+                var book = _manager.BookRepo.GetOneBookById(id,false);
+                    //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
 
                 if (book is null)
                     return NotFound();
@@ -59,8 +69,8 @@ namespace WebApi.Controllers
                 {
                     return BadRequest(); //400
                 }
-                _context.Books.Add(book);
-                _context.SaveChanges();
+                _manager.BookRepo.CreateOneBook(book);  //_context.Books.Add(book);
+                _manager.Save();    //_context.SaveChanges();
                 return StatusCode(201, book);
             }
             catch (Exception ex)
@@ -72,9 +82,10 @@ namespace WebApi.Controllers
         [HttpPut("{id:int}")]
         public IActionResult UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] Book book)
         {
-            try { 
+            try {
 
-                var entity = _context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+                var entity = _manager.BookRepo.GetOneBookById(id, true);
+                    //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
 
                 if (entity is null)
                 {
@@ -88,7 +99,7 @@ namespace WebApi.Controllers
                 //map işlemine ihtiyaç var:
                 entity.Title = book.Title;
                 entity.Price = book.Price;
-                _context.SaveChanges();
+                _manager.Save();  //_context.SaveChanges();
 
                 return Ok(book);
             }
@@ -105,7 +116,9 @@ namespace WebApi.Controllers
         {
             try
             {
-                var entity = _context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+                var entity = _manager.BookRepo.GetOneBookById(id, false);
+                    //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+
                 if (entity is null)
                     return NotFound(new
                     {
@@ -113,8 +126,8 @@ namespace WebApi.Controllers
                         message = $"Book with id:{id} could not be found."
                     }); // 404
 
-                _context.Books.Remove(entity);
-                _context.SaveChanges();
+                _manager.BookRepo.DeleteOneBook(entity);    //_context.Books.Remove(entity);
+                _manager.Save();                            //_context.SaveChanges();
 
                 return NoContent();
             }
@@ -129,14 +142,16 @@ namespace WebApi.Controllers
     [FromBody] JsonPatchDocument<Book> bookPatch)
         {
 
-            try { 
-            //check entity, if book exists
-            var entity = _context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+            try {
+                //check entity, if book exists
+                var entity = _manager.BookRepo.GetOneBookById(id, true);
+                    //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+
             if (entity is null)
                 return NotFound();//404
 
             bookPatch.ApplyTo(entity);
-                _context.SaveChanges();
+                _manager.BookRepo.Update(entity);    //_context.SaveChanges();
 
             return NoContent(); //204
             }

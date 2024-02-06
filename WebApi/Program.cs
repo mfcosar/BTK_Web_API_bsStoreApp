@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repositories.EFCore;
+using WebApi.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +18,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //DBcontext için servis kaydý: IoC'e dbcontext Register yapýlmýþ olur
-builder.Services.AddDbContext<RepositoryContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
+builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.ConfigureRepositoryManager();
 
 
 var app = builder.Build();
