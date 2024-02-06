@@ -20,6 +20,7 @@ builder.Services.AddSwaggerGen();
 //DBcontext için servis kaydý: IoC'e dbcontext Register yapýlmýþ olur
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
 
 
 var app = builder.Build();
