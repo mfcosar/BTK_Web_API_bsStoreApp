@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddControllers();
 
 //patch yapabilmek için controller'a Json handle eden mekanizma tanýmlanmasý gerekir
-builder.Services.AddControllers().AddNewtonsoftJson(); 
+builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly).
+    AddNewtonsoftJson(); 
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
