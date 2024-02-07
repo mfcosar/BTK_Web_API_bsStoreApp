@@ -46,7 +46,7 @@ namespace Services
             return _manager.BookRepo.GetAllBooks(trackChanges);
         }
 
-        public Book GetOneBook(int id, bool trackChanges)
+        public Book GetOneBookById(int id, bool trackChanges)
         {
             return _manager.BookRepo.GetOneBookById(id, trackChanges);
         }
