@@ -6,3 +6,22 @@
 2024-02-10 01:13:46.6063 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
 2024-02-10 01:17:38.5813 Info AppDomain Shutting down. LogFactory closing...
 2024-02-10 01:17:38.6115 Info LogFactory has been closed.
+2024-02-10 23:42:44.6449 Info Message Template Auto Format enabled
+2024-02-10 23:42:45.2995 Info Adding target FileTarget(Name=logfile)
+2024-02-10 23:42:45.3701 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-10 23:45:52.8154 Info Message Template Auto Format enabled
+2024-02-10 23:45:53.3147 Info Adding target FileTarget(Name=logfile)
+2024-02-10 23:45:53.4351 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-10 23:48:27.9234 Info Message Template Auto Format enabled
+2024-02-10 23:48:28.0472 Info Adding target FileTarget(Name=logfile)
+2024-02-10 23:48:28.0984 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-10 23:54:08.5598 Info AppDomain Shutting down. LogFactory closing...
+2024-02-10 23:54:08.5932 Info LogFactory has been closed.
+2024-02-11 00:08:37.2417 Info Message Template Auto Format enabled
+2024-02-11 00:08:37.3742 Info Adding target FileTarget(Name=logfile)
+2024-02-11 00:08:37.4250 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-11 01:09:45.6671 Info AppDomain Shutting down. LogFactory closing...
+2024-02-11 01:09:45.7061 Info LogFactory has been closed.
+2024-02-11 01:34:05.6389 Info Message Template Auto Format enabled
+2024-02-11 01:34:06.3086 Info Adding target FileTarget(Name=logfile)
+2024-02-11 01:34:06.3855 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config

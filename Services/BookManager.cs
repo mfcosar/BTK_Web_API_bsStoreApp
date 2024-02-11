@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.Exceptions;
 
 namespace Services
 {
@@ -33,9 +34,10 @@ namespace Services
             var entity = _manager.BookRepo.GetOneBookById(id, trackChanges);
             if (entity is null)
             {
-                string message = $"Book with id:{id} could not be found";
+                throw new BookNotFoundException(id);
+                /*string message = $"Book with id:{id} could not be found";
                 _logger.LogInfo(message);
-                throw new Exception(message);
+                throw new Exception(message);*/
             }
 
             _manager.BookRepo.DeleteOneBook(entity);
@@ -49,7 +51,10 @@ namespace Services
 
         public Book GetOneBookById(int id, bool trackChanges)
         {
-            return _manager.BookRepo.GetOneBookById(id, trackChanges);
+            var book= _manager.BookRepo.GetOneBookById(id, trackChanges);
+            if (book is null)
+                throw new BookNotFoundException(id);
+            return book;
         }
 
         public void UpDdateOneBook(int id, Book book, bool trackChanges)
@@ -58,9 +63,10 @@ namespace Services
             var entity = _manager.BookRepo.GetOneBookById(id, trackChanges);
             if (entity is null)
             {
-                string message = $"Book with id:{id} could not be found";
+                throw new BookNotFoundException(id);
+                /*string message = $"Book with id:{id} could not be found";
                 _logger.LogInfo(message);
-                throw new Exception(message);
+                throw new Exception(message);*/
             }
 
             /*if (book is null)
