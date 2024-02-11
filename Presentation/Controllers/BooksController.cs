@@ -1,4 +1,5 @@
-﻿using Entities.Exceptions;
+﻿using Entities.DataTransferObjects;
+using Entities.Exceptions;
 using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -71,12 +72,12 @@ namespace Presentation.Controllers
             }
 
             [HttpPut("{id:int}")]
-            public IActionResult UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] Book book)
+            public IActionResult UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] BookDtoForUpdate bookDto)
             {
-                if (book is null)
+                if (bookDto is null)
                     return BadRequest(); //400
 
-                _manager.BookService.UpDdateOneBook(id, book, true);
+                _manager.BookService.UpDdateOneBook(id, bookDto, true);
                 return NoContent(); //204
                                     //var entity = _manager.BookRepo.GetOneBookById(id, true);
                                     //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
@@ -123,13 +124,16 @@ namespace Presentation.Controllers
                 //check entity, if book exists
                 //var entity = _manager.BookRepo.GetOneBookById(id, true);
                 //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+
                 var entity = _manager.BookService.GetOneBookById(id, true);
 
                 bookPatch.ApplyTo(entity);
-                //_manager.BookRepo.Update(entity);    //_context.SaveChanges();
-                _manager.BookService.UpDdateOneBook(id, entity, true);
+            //_manager.BookRepo.Update(entity);    //_context.SaveChanges();
+            //_manager.BookService.UpDdateOneBook(id, entity, true); 
+            //Dto'dan ötürü hata verir. Patch yapısından ötürü mapping yapmadık. Bunu aşmak için:
 
-                return NoContent(); //204
+            _manager.BookService.UpDdateOneBook(id, new BookDtoForUpdate(entity.Id, entity.Title, entity.Price), true);
+            return NoContent(); //204
             }
         }
     }
