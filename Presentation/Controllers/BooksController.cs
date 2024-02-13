@@ -59,15 +59,17 @@ namespace Presentation.Controllers
             }
 
             [HttpPost]
-            public IActionResult FormOneBook([FromBody] Book book)
+            public IActionResult FormOneBook([FromBody] BookDtoForInsertion bookDto)
             {
-                if (book is null)
+                if (bookDto is null)
                     return BadRequest(); //400
+                if (!ModelState.IsValid)
+                    return UnprocessableEntity(ModelState); //422
 
-                //_manager.BookRepo.CreateOneBook(book);  //_context.Books.Add(book);
-                _manager.BookService.CreateOneBook(book);
+            //_manager.BookRepo.CreateOneBook(book);  //_context.Books.Add(book);
+            var book = _manager.BookService.CreateOneBook(bookDto);
                 //_manager.Save();    //_context.SaveChanges();
-                return StatusCode(201, book);
+                return StatusCode(201, book); //CreatedAtRoute()
 
             }
 
@@ -76,9 +78,12 @@ namespace Presentation.Controllers
             {
                 if (bookDto is null)
                     return BadRequest(); //400
+                if (!ModelState.IsValid)
+                  return UnprocessableEntity(ModelState); //422
 
-                _manager.BookService.UpDdateOneBook(id, bookDto, true);
+                _manager.BookService.UpDdateOneBook(id, bookDto, false);
                 return NoContent(); //204
+
                                     //var entity = _manager.BookRepo.GetOneBookById(id, true);
                                     //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
 
@@ -119,20 +124,31 @@ namespace Presentation.Controllers
 
             [HttpPatch("{id:int}")]
             public IActionResult PartiallyUpdateOneBook([FromRoute(Name = "id")] int id,
-        [FromBody] JsonPatchDocument<Book> bookPatch)
+        [FromBody] JsonPatchDocument<BookDtoForUpdate> bookPatch)
             {
-                //check entity, if book exists
-                //var entity = _manager.BookRepo.GetOneBookById(id, true);
-                //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
 
-                var entity = _manager.BookService.GetOneBookById(id, true);
+            // validation if bookPatch is valid
+            if (bookPatch is null)
+                return BadRequest();//400
+            var result = _manager.BookService.GetOneBookForPatch(id, false);
 
-                bookPatch.ApplyTo(entity);
+            //check entity, if book exists
+            //var entity = _manager.BookRepo.GetOneBookById(id, true);
+            //_context.Books.Where(b => b.Id.Equals(id)).SingleOrDefault();
+
+            //var bookDto = _manager.BookService.GetOneBookById(id, true);
+
+                bookPatch.ApplyTo(result.bookDtoForUpdate, ModelState);
             //_manager.BookRepo.Update(entity);    //_context.SaveChanges();
             //_manager.BookService.UpDdateOneBook(id, entity, true); 
             //Dto'dan ötürü hata verir. Patch yapısından ötürü mapping yapmadık. Bunu aşmak için:
 
-            _manager.BookService.UpDdateOneBook(id, new BookDtoForUpdate(entity.Id, entity.Title, entity.Price), true);
+            TryValidateModel(result.bookDtoForUpdate);
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
+            //save changes for patch
+            _manager.BookService.saveChangesForPatch(result.bookDtoForUpdate, result.book);
             return NoContent(); //204
             }
         }
