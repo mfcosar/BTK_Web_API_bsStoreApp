@@ -10,16 +10,16 @@ namespace Services.Contracts
 {
     public interface IBookService
     {
-        IEnumerable<BookDto> GetAllBooks(bool trackChanges);
-        BookDto GetOneBookById(int id, bool trackChanges);
-        BookDto CreateOneBook(BookDtoForInsertion book);
-        void UpDdateOneBook(int id, BookDtoForUpdate bookDto, bool trackChanges);
-        void DeleteOneBook(int id, bool trackChanges);
+        Task<IEnumerable<BookDto>> GetAllBooksAsync(bool trackChanges);
+        Task<BookDto> GetOneBookByIdAsync(int id, bool trackChanges);
+        Task<BookDto> CreateOneBookAsync(BookDtoForInsertion book);
+        Task UpDdateOneBookAsync(int id, BookDtoForUpdate bookDto, bool trackChanges);
+        Task DeleteOneBookAsync(int id, bool trackChanges);
 
         //patch işlemi için tuple tanımlanır
-        (BookDtoForUpdate bookDtoForUpdate, Book book) GetOneBookForPatch(int id, bool trackChanges);
+        Task<(BookDtoForUpdate bookDtoForUpdate, Book book)> GetOneBookForPatchAsync(int id, bool trackChanges);
 
-        void saveChangesForPatch(BookDtoForUpdate bookDtoForUpdate, Book book);
+        Task saveChangesForPatchAsync(BookDtoForUpdate bookDtoForUpdate, Book book);
 
 
     }

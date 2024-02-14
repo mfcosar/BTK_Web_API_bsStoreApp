@@ -23,9 +23,9 @@ namespace Repositories.EFCore
         //normalde bir class içinde başka bir class new'lenmez; sıkı bağlı bir uygulama olur. Ama;
         //IBookRepository için ayrı bir IoC kaydı yapmak istemiyoruz. O sebeple burda BookRepo new'lenecek
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

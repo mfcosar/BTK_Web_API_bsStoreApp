@@ -12,7 +12,7 @@ namespace Repositories.Contracts
 
         IBookRepository BookRepo { get; }
 
-        void Save();
-        
+        Task SaveAsync(); //Task<void> SaveAsync();
+
     }
 }
