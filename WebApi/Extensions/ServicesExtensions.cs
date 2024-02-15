@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Presentation.ActionFilters;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services;
@@ -22,5 +23,12 @@ namespace WebApi.Extensions
 
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddSingleton<ILoggerService, LoggerManager>();
+
+        public static void ConfigureActionFilters(this IServiceCollection services)
+        {
+            //ActionFilter kaydını Extensions'a taşınır
+            services.AddScoped<ValidationFilterAttribute>(); //with every HTTP request, we get a new instance.
+            services.AddSingleton<LogFilterAttribute>(); //Sadece 1 tane üretilse yeterli
+        }
     }
 }
