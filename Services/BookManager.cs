@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Entities.Exceptions;
 using AutoMapper;
 using Entities.DataTransferObjects;
+using Entities.RequestFeatures;
 
 namespace Services
 {
@@ -50,9 +51,9 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<IEnumerable<BookDto>> GetAllBooksAsync(bool trackChanges)
+        public async Task<IEnumerable<BookDto>> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
-            var books = await _manager.BookRepo.GetAllBooksAsync(trackChanges);
+            var books = await _manager.BookRepo.GetAllBooksAsync(bookParameters, trackChanges);
             return _mapper.Map<IEnumerable<BookDto>>(books);
         }
 
