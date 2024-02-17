@@ -30,5 +30,19 @@ namespace WebApi.Extensions
             services.AddScoped<ValidationFilterAttribute>(); //with every HTTP request, we get a new instance.
             services.AddSingleton<LogFilterAttribute>(); //Sadece 1 tane üretilse yeterli
         }
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            //Her hangi bir server API'ye request gönderebilir, herhangibir header'ı kullanabilir,"X-Pagination" header'ı da kullanılabilir
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("X-Pagination");
+                });
+            });
+        }
     }
 }
