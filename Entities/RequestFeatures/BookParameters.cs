@@ -9,6 +9,9 @@
         //arama için:
         public string? SearchTerm { get; set; }
 
-
+        public BookParameters()
+        {
+            OrderBy = "id"; //hangi kategoriye göre sıralama yapılacak
+        }
     }
 }
