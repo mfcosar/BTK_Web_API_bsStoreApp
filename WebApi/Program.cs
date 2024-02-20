@@ -49,6 +49,7 @@ builder.Services.ConfigureLoggerService();
 builder.Services.AddAutoMapper(typeof(Program)); //assembly run time'da dikkate alýnýr
 builder.Services.ConfigureActionFilters();
 builder.Services.ConfigureCors();
+builder.Services.ConfigureDataShaper();
 
 var app = builder.Build();
 
