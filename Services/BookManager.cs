@@ -62,6 +62,7 @@ namespace Services
             var booksWithMetaData = await _manager.BookRepo.GetAllBooksAsync(bookParameters, trackChanges);
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
 
+            //Data shaping:
             var shapedData = _shaper.ShapeData(booksDto, bookParameters.Fields);
             return (books: shapedData, metadata: booksWithMetaData.MetaData);
         }

@@ -4,6 +4,7 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Presentation.ActionFilters;
 using Services.Contracts;
 using System;
@@ -45,6 +46,8 @@ namespace Presentation.Controllers
 
 
         [HttpGet]
+        //MediaType validation check
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetAllBooksAsync([FromQuery]BookParameters bookParameters)
         {
             //var books = _manager.BookRepo.GetAllBooks(false);   //_context.Books.ToList();
