@@ -45,6 +45,7 @@ namespace Services
             }
 
             var bookCollection = new LinkCollectionWrapper<Entity>(shapedBooks);
+            GenerateForBooks(httpContext, bookCollection);
             return new LinkResponse() { HasLinks = true, LinkedEntities = bookCollection };
         }
 
@@ -52,10 +53,32 @@ namespace Services
         {
             var links = new List<Link>()
             {
-                new Link("a1","b1", "c1"),
-                new Link("a2","b2", "c2")
+                new Link()
+                {
+                    Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}" +
+                    $"/{bookDto.Id}",
+                    Rel = "self",
+                    Method="GET"
+                },
+                 new Link()
+                {
+                    Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}",
+                    Rel = "generate",
+                    Method="POST"
+                },
             };
             return links;
+        }
+
+       private LinkCollectionWrapper<Entity> GenerateForBooks(HttpContext httpContext, 
+           LinkCollectionWrapper<Entity> bookCollectionWrapper)
+        {
+            bookCollectionWrapper.Links.Add(new Link() {
+                Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}",
+            Rel="self",
+            Method="GET"
+            });
+            return bookCollectionWrapper;
         }
 
         private LinkResponse ReturnShapedBooks(List<Entity> shapedBooks)

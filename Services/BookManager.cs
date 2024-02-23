@@ -11,6 +11,7 @@ using AutoMapper;
 using Entities.DataTransferObjects;
 using Entities.RequestFeatures;
 using System.Dynamic;
+using Entities.LinkModels;
 
 namespace Services
 {
@@ -19,14 +20,15 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
-        private readonly IDataShaper<BookDto> _shaper;
+        //private readonly IDataShaper<BookDto> _shaper;
+        private readonly IBookLinks _bookLinks;
 
-        public BookManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IDataShaper<BookDto> shaper)
+        public BookManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IBookLinks bookLinks)
         {
             _manager = manager;
             _logger = logger;
             _mapper = mapper;
-            _shaper = shaper;
+            _bookLinks = bookLinks;
         }
 
         public async Task<BookDto> CreateOneBookAsync(BookDtoForInsertion bookDto)
@@ -54,17 +56,19 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<(IEnumerable<ExpandoObject> books, MetaData metaData)> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
+        public async Task<(LinkResponse linkResponse, MetaData metaData)> GetAllBooksAsync(LinkParameters linkParameters, bool trackChanges)
         {
-            if (!bookParameters.ValidPriceRange)
+            if (!linkParameters.BookParameters.ValidPriceRange)
                 throw new PriceOutofRangeBadRequestException();
 
-            var booksWithMetaData = await _manager.BookRepo.GetAllBooksAsync(bookParameters, trackChanges);
+            var booksWithMetaData = await _manager.BookRepo.GetAllBooksAsync(linkParameters.BookParameters, trackChanges);
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
 
-            //Data shaping:
-            var shapedData = _shaper.ShapeData(booksDto, bookParameters.Fields);
-            return (books: shapedData, metadata: booksWithMetaData.MetaData);
+            //Data shaping: artık link üzerinde gerçekleşecek.
+            //var shapedData = _shaper.ShapeData(booksDto, bookParameters.Fields);
+
+            var links = _bookLinks.TryGenerateLinks(booksDto, linkParameters.BookParameters.Fields, linkParameters.HttpContext);
+            return (linkResponse: links, metadata: booksWithMetaData.MetaData);
         }
 
         public async  Task<BookDto> GetOneBookByIdAsync(int id, bool trackChanges)

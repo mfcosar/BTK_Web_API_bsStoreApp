@@ -51,11 +51,19 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetAllBooksAsync([FromQuery]BookParameters bookParameters)
         {
             //var books = _manager.BookRepo.GetAllBooks(false);   //_context.Books.ToList();
-            var pagedResult = await _manager.BookService.GetAllBooksAsync(bookParameters,false);
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+            var linkParameters = new LinkParameters()
+            {
+                BookParameters = bookParameters,
+                HttpContext = HttpContext
+            };
+            var result = await _manager.BookService.GetAllBooksAsync(linkParameters,false);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
             //Front-end geliştirirken header'dan gelen bilgiler önemli
-            return Ok(pagedResult.books);
+            return result.linkResponse.HasLinks ?
+                Ok(result.linkResponse.LinkedEntities) :
+                Ok(result.linkResponse.ShapedEntities);
         }
 
         [HttpGet("{id:int}")]
