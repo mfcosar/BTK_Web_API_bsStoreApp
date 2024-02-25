@@ -46,7 +46,7 @@ namespace Presentation.Controllers
 
 
         [HttpHead] //server HEAD isteklerine cvp verir artık
-        [HttpGet]
+        [HttpGet(Name = "GetAllBooksAsync")]
         //MediaType validation check
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetAllBooksAsync([FromQuery]BookParameters bookParameters)
@@ -78,7 +78,8 @@ namespace Presentation.Controllers
         }
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [HttpPost]
+        [HttpPost(Name ="FormOneBookAsync")]
+
         public async Task<IActionResult> FormOneBookAsync([FromBody] BookDtoForInsertion bookDto)
         {
             /* ValidationFilterAttribute handles this part already
