@@ -181,3 +181,15 @@
 2024-02-24 00:40:39.6759 Info Message Template Auto Format enabled
 2024-02-24 00:40:40.0541 Info Adding target FileTarget(Name=logfile)
 2024-02-24 00:40:40.1678 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-25 22:46:22.4442 Info Message Template Auto Format enabled
+2024-02-25 22:46:23.1219 Info Adding target FileTarget(Name=logfile)
+2024-02-25 22:46:23.1829 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-25 22:48:13.0783 Info Message Template Auto Format enabled
+2024-02-25 22:48:13.4180 Info Adding target FileTarget(Name=logfile)
+2024-02-25 22:48:13.5136 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-25 22:49:07.1488 Info Message Template Auto Format enabled
+2024-02-25 22:49:07.5044 Info Adding target FileTarget(Name=logfile)
+2024-02-25 22:49:07.6242 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config
+2024-02-25 22:57:54.3637 Info Message Template Auto Format enabled
+2024-02-25 22:57:55.0793 Info Adding target FileTarget(Name=logfile)
+2024-02-25 22:57:55.1459 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\SAMSUNG\source\repos\bsStoreApp\WebApi\nlog.config

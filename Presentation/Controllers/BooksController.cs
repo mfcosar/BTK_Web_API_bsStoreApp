@@ -45,6 +45,7 @@ namespace Presentation.Controllers
         }*/
 
 
+        [HttpHead] //server HEAD isteklerine cvp verir artık
         [HttpGet]
         //MediaType validation check
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
@@ -172,6 +173,14 @@ namespace Presentation.Controllers
             //save changes for patch
             await _manager.BookService.saveChangesForPatchAsync(result.bookDtoForUpdate, result.book);
             return NoContent(); //204
+        }
+
+        [HttpOptions]
+        public IActionResult GetBooksOptions()
+        {
+            Response.Headers.Add("Allow", "GET, PUT, POST, PATCH, DELETE, HEAD,OPTIONS"); //key-value pair
+            //Header üzerinden client ile haberleşiliyor. Dolayısıyla bir content olmayacak
+            return Ok();  //200 
         }
     }
 }
