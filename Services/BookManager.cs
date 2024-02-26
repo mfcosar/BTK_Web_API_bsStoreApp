@@ -122,5 +122,11 @@ namespace Services
                 throw new BookNotFoundException(id);
             return entity;
         }
+
+        public async Task<List<Book>> GetAllBooksAsync(bool trackChanges)
+        {
+            var books = await _manager.BookRepo.GetAllBooksAsync(trackChanges);
+            return books;
+        }
     }
 }

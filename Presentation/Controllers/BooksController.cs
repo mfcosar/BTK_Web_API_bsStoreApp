@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
+    //[ApiVersion("1.0")]
     [ServiceFilter(typeof(LogFilterAttribute))]   //Bütün metodların loglanması için en başa yazılır
     [ApiController]
     [Route("api/books")]
