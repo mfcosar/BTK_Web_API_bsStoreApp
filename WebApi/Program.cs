@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -57,6 +58,9 @@ builder.Services.AddScoped<IBookLinks, BookLinks>();
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
 builder.Services.ConfigureHttpCacheHeaders();
+builder.Services.AddMemoryCache(); //Requestleri saymak için
+builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -73,6 +77,7 @@ if (app.Environment.IsProduction())
     app.UseHsts();
 
 app.UseHttpsRedirection();
+app.UseIpRateLimiting(); // Cors'un üzerinde olmasý gerek
 app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
