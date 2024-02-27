@@ -2,6 +2,7 @@
 using Entities.Exceptions;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -20,6 +21,8 @@ namespace Presentation.Controllers
     [ServiceFilter(typeof(LogFilterAttribute))]   //Bütün metodların loglanması için en başa yazılır
     [ApiController]
     [Route("api/books")]
+    //[ResponseCache(CacheProfileName="5mins")]
+    //[HttpCacheExpiration(CacheLocation=CacheLocation.Public, MaxAge = 80)]
 
     public class BooksController : ControllerBase
     {
@@ -50,6 +53,7 @@ namespace Presentation.Controllers
         [HttpGet(Name = "GetAllBooksAsync")]
         //MediaType validation check
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+        //[ResponseCache(Duration = 60)] //60 sec. fresh response, 5mins profiline uymak istenirse bu ifade silinir
         public async Task<IActionResult> GetAllBooksAsync([FromQuery]BookParameters bookParameters)
         {
             //var books = _manager.BookRepo.GetAllBooks(false);   //_context.Books.ToList();
