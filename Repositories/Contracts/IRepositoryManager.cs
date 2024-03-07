@@ -11,6 +11,7 @@ namespace Repositories.Contracts
         //unit of work pattern'i uygulanır. Yani bütün repo'lara manager üzerinden erişim verilir
 
         IBookRepository BookRepo { get; }
+        ICategoryRepository CategoryRepo { get; }
 
         Task SaveAsync(); //Task<void> SaveAsync();
 

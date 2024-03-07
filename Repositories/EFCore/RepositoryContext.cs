@@ -20,6 +20,7 @@ namespace Repositories.EFCore
         }
         //Artuk elimizde DbContext var, hayırlı olsun :)
         public DbSet<Book> Books { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         //migr.script type config edilmezse yani BookConfig. verilmezse boş gelir:
         protected override void OnModelCreating(ModelBuilder modelBuilder)
