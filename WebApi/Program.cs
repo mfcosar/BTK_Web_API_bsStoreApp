@@ -42,7 +42,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwagger();   //builder.Services.AddSwaggerGen();
 
 //DBcontext için servis kaydý: IoC'e dbcontext Register yapýlmýþ olur
 builder.Services.ConfigureSqlContext(builder.Configuration);
@@ -62,6 +62,10 @@ builder.Services.AddMemoryCache(); //Requestleri saymak için
 builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.ConfigureIdentity(); //Sýra önemli: önce Identity sonra JWT gelmeli
+//builder.Services.AddAuthentication(); => Bunun yerine JWT çaðrýlýr
+builder.Services.ConfigureJWT(builder.Configuration);
+
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILoggerService>();
@@ -71,7 +75,11 @@ app.ConfigureExceptionHandler(logger);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(s =>
+    {
+        s.SwaggerEndpoint("/swagger/v1/swagger.json", "BTK Akademi v1");
+        s.SwaggerEndpoint("/swagger/v2/swagger.json", "BTK Akademi v2");
+    });
 }
 if (app.Environment.IsProduction())
     app.UseHsts();
@@ -82,7 +90,7 @@ app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
