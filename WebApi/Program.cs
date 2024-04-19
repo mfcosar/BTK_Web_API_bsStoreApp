@@ -27,8 +27,9 @@ builder.Services.AddControllers(config =>
     })
     .AddXmlDataContractSerializerFormatters()
     .AddCustomCsvFormatter()
-    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-    //.AddNewtonsoftJson();
+    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
+    .AddNewtonsoftJson(opt => 
+    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); // object cycle hatasýndan kurtulmak için
 
 
 //ActionFilter kaydý Extensions'a taþýnýr => builder.Services.AddScoped<ValidationFilterAttribute>();

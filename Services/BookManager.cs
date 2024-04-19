@@ -17,23 +17,34 @@ namespace Services
 {
     public class BookManager : IBookService
     {
+        private readonly ICategoryService _categoryService;
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
         //private readonly IDataShaper<BookDto> _shaper;
         private readonly IBookLinks _bookLinks;
 
-        public BookManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IBookLinks bookLinks)
+        public BookManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IBookLinks bookLinks, ICategoryService categoryService)
         {
             _manager = manager;
             _logger = logger;
             _mapper = mapper;
             _bookLinks = bookLinks;
+            _categoryService = categoryService;
         }
 
         public async Task<BookDto> CreateOneBookAsync(BookDtoForInsertion bookDto)
         {
+            /*var category = await _manager.CategoryRepo.GetOneCategoryByIdAsync(bookDto.CategoryId, false);
+
+            if (category is null)
+                throw new CategoryNotFoundException(bookDto.CategoryId);
+            //_categoryService injection'dan sonra           
+             */
+            var category = await _categoryService.GetOneCategoryByIdAsync(bookDto.CategoryId, false);
             var entity = _mapper.Map<Book>(bookDto);
+            //entity.CategoryId = bookDto.CategoryId; maplemede yapılmış.
+
             _manager.BookRepo.CreateOneBook(entity); //kitap oluşturuldu ama kaydedilmedi
             await _manager.SaveAsync();
             return _mapper.Map<BookDto>(entity);
@@ -127,6 +138,12 @@ namespace Services
         {
             var books = await _manager.BookRepo.GetAllBooksAsync(trackChanges);
             return books;
+        }
+
+        public async Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackchanges)
+        {
+            return await _manager.BookRepo.GetAllBooksWithDetailsAsync(trackchanges);
+            //throw new NotImplementedException();
         }
     }
 }

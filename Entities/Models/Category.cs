@@ -10,5 +10,9 @@ namespace Entities.Models
     {
         public int CategoryId { get; set; }
         public String? CategoryName { get; set; }
+        
+        
+        //Ref: collection navigation property
+        //public ICollection<Book> Books { get; set; } // burası optional, yapılmasa da olur. Açılınca self loop oluyor. Kapatmak daha iyi
     }
 }
