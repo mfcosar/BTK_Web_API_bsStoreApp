@@ -117,8 +117,10 @@ namespace Services
             //mapping
             /*entity.Title = book.Title;
             entity.Price = book.Price;*/
-            var category = await _categoryService.GetOneCategoryByIdAsync(bookDto.CategoryId, false);
+            
             entity = _mapper.Map<Book>(bookDto);
+            var category = await _categoryService.GetOneCategoryByIdAsync(bookDto.CategoryId, false);
+            entity.Category = category; // entity'nin category'si bookDto'dan gelemiyor. O nedenle map edilemiyor.
 
             _manager.BookRepo.Update(entity); // EFCore izlediği için update metodu çağrılmasa da update eder, direkt save edilebilir
             await _manager.SaveAsync();

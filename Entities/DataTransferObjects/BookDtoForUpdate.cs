@@ -17,9 +17,9 @@ namespace Entities.DataTransferObjects
     public record BookDtoForUpdate: BookDtoForManipulation        //(int Id, String Title, decimal Price);
     {
         [Required]
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [Required(ErrorMessage = "Category Id is required")]
-        public int CategoryId { get; set; }
+        public int CategoryId { get; init; }
     }
 }
