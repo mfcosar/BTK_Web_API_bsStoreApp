@@ -62,10 +62,11 @@ builder.Services.ConfigureHttpCacheHeaders();
 builder.Services.AddMemoryCache(); //Requestleri saymak için
 builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.ConfigureIdentity(); //Sýra önemli: önce Identity sonra JWT gelmeli
-//builder.Services.AddAuthentication(); => Bunun yerine JWT çaðrýlýr
-builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.ConfigureJWT(builder.Configuration);//builder.Services.AddAuthentication(); => Bunun yerine JWT çaðrýlýr
+
+builder.Services.RegisterRepositories(); // Repo context için new'lenen IBookRepository ve ICategoryRepository kayýtlarý
+builder.Services.RegisterServices();
 
 var app = builder.Build();
 

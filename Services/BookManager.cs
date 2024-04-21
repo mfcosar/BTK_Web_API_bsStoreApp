@@ -106,7 +106,7 @@ namespace Services
 
         }
 
-        public async Task UpDdateOneBookAsync(int id, BookDtoForUpdate bookDto, bool trackChanges)
+        public async Task UpdateOneBookAsync(int id, BookDtoForUpdate bookDto, bool trackChanges)
         {
             //check entity: kitap varsa update edilecek
             var entity = await GetOneBookByIdAndCheckExists(id, trackChanges);
@@ -117,6 +117,7 @@ namespace Services
             //mapping
             /*entity.Title = book.Title;
             entity.Price = book.Price;*/
+            var category = await _categoryService.GetOneCategoryByIdAsync(bookDto.CategoryId, false);
             entity = _mapper.Map<Book>(bookDto);
 
             _manager.BookRepo.Update(entity); // EFCore izlediği için update metodu çağrılmasa da update eder, direkt save edilebilir

@@ -20,6 +20,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace WebApi.Extensions
 {
@@ -227,6 +228,20 @@ namespace WebApi.Extensions
                 });
             });
 
+        }
+
+        public static void RegisterRepositories(this IServiceCollection services) {
+
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+        }
+
+        public static void RegisterServices(this IServiceCollection services)
+        {
+
+            services.AddScoped<IBookService, BookManager>();
+            services.AddScoped<ICategoryService, CategoryManager>();
+            services.AddScoped<IAuthenticationService, AuthenticationManager>();
         }
     }
 }

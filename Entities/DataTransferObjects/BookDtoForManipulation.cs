@@ -17,5 +17,7 @@ namespace Entities.DataTransferObjects
         [Required(ErrorMessage = "Price is required")]
         [Range(10, 1000, ErrorMessage = "Price must be in the range 10-1000.")]
         public decimal Price { get; set; }
+
+        //public int CategoryId { get; set; }
     }
 }

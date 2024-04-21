@@ -122,7 +122,7 @@ namespace Presentation.Controllers
             if (!ModelState.IsValid)
               return UnprocessableEntity(ModelState); //422
             */
-            await _manager.BookService.UpDdateOneBookAsync(id, bookDto, false);
+            await _manager.BookService.UpdateOneBookAsync(id, bookDto, false);
             return NoContent(); //204
 
             //var entity = _manager.BookRepo.GetOneBookById(id, true);

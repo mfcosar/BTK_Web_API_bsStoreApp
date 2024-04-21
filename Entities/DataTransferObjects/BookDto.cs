@@ -7,5 +7,7 @@
         public String Title { get; init; }
         public decimal Price { get; init; }
 
+        public int CategoryId { get; init; }
+
     } //(int Id, String Title, decimal Price);
 }
